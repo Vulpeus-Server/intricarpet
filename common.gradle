@@ -49,7 +49,11 @@ remapJar {
   remapperIsolation = true
 }
 
-if (mcVersion >= 11800) {
+if (mcVersion >= 12100) {
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
+}
+else if (mcVersion >= 11800) {
   sourceCompatibility = JavaVersion.VERSION_17
   targetCompatibility = JavaVersion.VERSION_17
 }

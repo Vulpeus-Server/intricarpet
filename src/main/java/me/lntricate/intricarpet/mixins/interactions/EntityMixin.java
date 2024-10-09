@@ -52,10 +52,12 @@ public class EntityMixin
     return original || noBlockInteraction();
   }
 
-  @Inject(method = "teleportToWithTicket", at = @At("HEAD"), cancellable = true)
+  //#if MC < 12100
+  @Inject(method = "teleportToWithTicket", at = @At("HEAD"), cancellable = true, remap = false)
   private void teleportToWithTicket(double x, double y, double z, CallbackInfo ci)
   {
     if((Entity)(Object)this instanceof IServerPlayer player && !player.getInteraction(Interaction.CHUNKLOADING))
       ci.cancel();
   }
+  //#endif
 }
