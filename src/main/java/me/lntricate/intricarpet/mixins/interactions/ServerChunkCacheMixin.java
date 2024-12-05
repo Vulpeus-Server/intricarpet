@@ -1,7 +1,9 @@
 package me.lntricate.intricarpet.mixins.interactions;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
@@ -17,11 +19,14 @@ import net.minecraft.world.level.chunk.LevelChunk;
 @Mixin(ServerChunkCache.class)
 public class ServerChunkCacheMixin
 {
-  @Shadow private ChunkMap chunkMap;
+  @Final
+  @Shadow
+  public ChunkMap chunkMap;
 
+  @Unique
   private static final String targetMethod =
   //#if MC >= 11800
-  //$$ "tickChunks";
+  //$$ "tickChunks()V";
   //#else
     "method_20801";
   //#endif
