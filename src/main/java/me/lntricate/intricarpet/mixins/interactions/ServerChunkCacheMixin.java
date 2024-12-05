@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.NaturalSpawner.SpawnState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import java.util.List;
 
 @Mixin(ServerChunkCache.class)
 public class ServerChunkCacheMixin
@@ -25,14 +26,21 @@ public class ServerChunkCacheMixin
 
   @Unique
   private static final String targetMethod =
-  //#if MC >= 11800
+  //#if MC >= 12100
+  //$$ "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;JLjava/util/List;)V";
+  //#elseif MC >= 11800
   //$$ "tickChunks()V";
   //#else
     "method_20801";
   //#endif
 
+  //#if MC >= 12100
+  //$$ @WrapWithCondition(method = targetMethod, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/NaturalSpawner;spawnForChunk(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/world/level/NaturalSpawner$SpawnState;Ljava/util/List;)V"))
+  //$$ private boolean shouldSpawnMobs(ServerLevel a, LevelChunk levelChunk, SpawnState b, List c)
+  //#else
   @WrapWithCondition(method = targetMethod, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/NaturalSpawner;spawnForChunk(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/world/level/NaturalSpawner$SpawnState;ZZZ)V"))
   private boolean shouldSpawnMobs(ServerLevel a, LevelChunk levelChunk, SpawnState b, boolean c, boolean d, boolean e)
+  //#endif
   {
     return ((IChunkMap)chunkMap).anyPlayerCloseWithInteraction(levelChunk.getPos(), Interaction.MOBSPAWNING);
   }
