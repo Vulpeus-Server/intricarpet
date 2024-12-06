@@ -16,6 +16,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.NaturalSpawner.SpawnState;
 import net.minecraft.world.level.chunk.LevelChunk;
 
+//#if MC >= 12100
+//$$ import java.util.List;
+//#else
+
 @Mixin(ServerChunkCache.class)
 public class ServerChunkCacheMixin
 {
