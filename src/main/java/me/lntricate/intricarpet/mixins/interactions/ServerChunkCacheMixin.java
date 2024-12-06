@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.NaturalSpawner.SpawnState;
 import net.minecraft.world.level.chunk.LevelChunk;
-import java.util.List;
 
 @Mixin(ServerChunkCache.class)
 public class ServerChunkCacheMixin
