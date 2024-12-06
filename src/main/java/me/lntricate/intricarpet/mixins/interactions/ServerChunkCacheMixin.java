@@ -18,7 +18,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 
 //#if MC >= 12100
 //$$ import java.util.List;
-//#else
+//#endif
 
 @Mixin(ServerChunkCache.class)
 public class ServerChunkCacheMixin
