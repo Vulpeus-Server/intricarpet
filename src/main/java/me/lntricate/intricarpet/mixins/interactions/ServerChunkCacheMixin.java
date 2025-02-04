@@ -29,7 +29,7 @@ public class ServerChunkCacheMixin
 
   @Unique
   private static final String targetMethod =
-  //#if MC >= 12100
+  //#if MC >= 12102
   //$$ "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;JLjava/util/List;)V";
   //#elseif MC >= 11800
   //$$ "tickChunks()V";
@@ -37,7 +37,7 @@ public class ServerChunkCacheMixin
     "method_20801";
   //#endif
 
-  //#if MC >= 12100
+  //#if MC >= 12102
   //$$ @WrapWithCondition(method = targetMethod, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/NaturalSpawner;spawnForChunk(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/world/level/NaturalSpawner$SpawnState;Ljava/util/List;)V"))
   //$$ private boolean shouldSpawnMobs(ServerLevel a, LevelChunk levelChunk, SpawnState b, List c)
   //#else
