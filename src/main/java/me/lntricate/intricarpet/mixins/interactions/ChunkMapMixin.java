@@ -16,14 +16,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 
-//#if MC >= 12108
+//#if MC >= 12105
 //$$ import net.minecraft.world.phys.Vec3;
 //#endif
 
 @Mixin(ChunkMap.class)
 public class ChunkMapMixin implements IChunkMap
 {
-  //#if MC >= 12108
+  //#if MC >= 12105
   //$$ @Shadow private static double euclideanDistanceSquared(ChunkPos chunkPos, Vec3 vec){return 0.0;}
   //#else
   @Shadow private static double euclideanDistanceSquared(ChunkPos chunkPos, Entity entity){return 0.0;}
@@ -32,7 +32,7 @@ public class ChunkMapMixin implements IChunkMap
 
   private boolean playerValid(ServerPlayer player, ChunkPos chunkPos, Interaction interaction)
   {
-    //#if MC >= 12108
+    //#if MC >= 12105
     //$$ return ((IServerPlayer)player).getInteraction(interaction) && euclideanDistanceSquared(chunkPos, player.position()) < 16384d;
     //#else
     return ((IServerPlayer)player).getInteraction(interaction) && euclideanDistanceSquared(chunkPos, player) < 16384d;

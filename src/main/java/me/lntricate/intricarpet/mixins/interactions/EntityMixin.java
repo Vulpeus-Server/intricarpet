@@ -33,7 +33,7 @@ public class EntityMixin
   //   return original || noBlockInteraction();
   // }
 
-  //#if MC <= 12105
+  //#if MC <= 12104
   @WrapWithCondition(method = "checkFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;fallOn(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/Entity;F)V"))
   private boolean shouldFallOn(Block instance, Level level, BlockState blockState, BlockPos blockPos, Entity entity, float fallDistance)
   //#else

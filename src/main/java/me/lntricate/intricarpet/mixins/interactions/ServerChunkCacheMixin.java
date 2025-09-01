@@ -20,7 +20,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 //$$ import java.util.List;
 //#endif
 
-//#if MC >= 12108
+//#if MC >= 12105
 //$$ import org.spongepowered.asm.mixin.injection.Redirect;
 //$$ import java.util.function.Consumer;
 //#endif
@@ -34,7 +34,7 @@ public class ServerChunkCacheMixin
 
   @Unique
   private static final String targetMethod =
-  //#if MC >= 12108
+  //#if MC >= 12105
   //$$ "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;J)V";
   //#elseif MC >= 12102
   //$$ "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;JLjava/util/List;)V";
@@ -44,7 +44,7 @@ public class ServerChunkCacheMixin
     "method_20801";
   //#endif
 
-  //#if MC >= 12108
+  //#if MC >= 12105
   //$$ @WrapWithCondition(method = "tickSpawningChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/NaturalSpawner;spawnForChunk(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/world/level/NaturalSpawner$SpawnState;Ljava/util/List;)V"))
   //$$ private boolean shouldSpawnMobs(ServerLevel a, LevelChunk levelChunk, SpawnState b, List c)
   //#elseif MC >= 12102
@@ -58,7 +58,7 @@ public class ServerChunkCacheMixin
     return ((IChunkMap)chunkMap).anyPlayerCloseWithInteraction(levelChunk.getPos(), Interaction.MOBSPAWNING);
   }
 
-  //#if MC >= 12108
+  //#if MC >= 12105
   //$$ @Redirect(
   //$$         method = targetMethod,
   //$$         at = @At(
