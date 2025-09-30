@@ -20,6 +20,11 @@ import net.minecraft.world.level.chunk.LevelChunk;
 //$$ import java.util.List;
 //#endif
 
+//#if MC >= 12105
+//$$ import org.spongepowered.asm.mixin.injection.Redirect;
+//$$ import java.util.function.Consumer;
+//#endif
+
 @Mixin(ServerChunkCache.class)
 public class ServerChunkCacheMixin
 {
@@ -29,7 +34,9 @@ public class ServerChunkCacheMixin
 
   @Unique
   private static final String targetMethod =
-  //#if MC >= 12100
+  //#if MC >= 12105
+  //$$ "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;J)V";
+  //#elseif MC >= 12102
   //$$ "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;JLjava/util/List;)V";
   //#elseif MC >= 11800
   //$$ "tickChunks()V";
@@ -37,7 +44,10 @@ public class ServerChunkCacheMixin
     "method_20801";
   //#endif
 
-  //#if MC >= 12100
+  //#if MC >= 12105
+  //$$ @WrapWithCondition(method = "tickSpawningChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/NaturalSpawner;spawnForChunk(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/world/level/NaturalSpawner$SpawnState;Ljava/util/List;)V"))
+  //$$ private boolean shouldSpawnMobs(ServerLevel a, LevelChunk levelChunk, SpawnState b, List c)
+  //#elseif MC >= 12102
   //$$ @WrapWithCondition(method = targetMethod, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/NaturalSpawner;spawnForChunk(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/world/level/NaturalSpawner$SpawnState;Ljava/util/List;)V"))
   //$$ private boolean shouldSpawnMobs(ServerLevel a, LevelChunk levelChunk, SpawnState b, List c)
   //#else
@@ -48,9 +58,33 @@ public class ServerChunkCacheMixin
     return ((IChunkMap)chunkMap).anyPlayerCloseWithInteraction(levelChunk.getPos(), Interaction.MOBSPAWNING);
   }
 
+  //#if MC >= 12105
+  //$$ @Redirect(
+  //$$         method = targetMethod,
+  //$$         at = @At(
+  //$$                 value = "INVOKE",
+  //$$                 target = "Lnet/minecraft/server/level/ChunkMap;forEachBlockTickingChunk(Ljava/util/function/Consumer;)V"
+  //$$         )
+  //$$ )
+  //$$ private void redirectForEachBlockTickingChunk(ChunkMap chunkMapInstance, Consumer<LevelChunk> originalConsumer) {
+  //$$   Consumer<LevelChunk> wrapper = (levelChunk) -> {
+  //$$     try {
+  //$$       boolean should = ((IChunkMap)chunkMapInstance)
+  //$$               .anyPlayerCloseWithInteraction(levelChunk.getPos(), Interaction.RANDOMTICKS);
+  //$$       if (should) {
+  //$$         originalConsumer.accept(levelChunk);
+  //$$       }
+  //$$     } catch (Throwable t) {
+  //$$       t.printStackTrace();
+  //$$     }
+  //$$   };
+  //$$   chunkMapInstance.forEachBlockTickingChunk(wrapper);
+  //$$ }
+  //#else
   @WrapWithCondition(method = targetMethod, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;tickChunk(Lnet/minecraft/world/level/chunk/LevelChunk;I)V"))
   private boolean shouldRandomTick(ServerLevel instance, LevelChunk levelChunk, int i)
   {
     return ((IChunkMap)chunkMap).anyPlayerCloseWithInteraction(levelChunk.getPos(), Interaction.RANDOMTICKS);
   }
+  //#endif
 }

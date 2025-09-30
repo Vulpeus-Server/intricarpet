@@ -33,6 +33,8 @@ dependencies {
 }
 
 loom {
+  accessWidenerPath = file("${project.mod_id}.accesswidener")
+
   runConfigs.all {
     // to make sure it generates all "Minecraft Client (:subproject_name)" applications
     ideConfigGenerated true
