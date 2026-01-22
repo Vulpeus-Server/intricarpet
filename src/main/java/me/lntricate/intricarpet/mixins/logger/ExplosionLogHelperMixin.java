@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 public class ExplosionLogHelperMixin
 {
   @Shadow @Final private Vec3 pos;
-  @Shadow private boolean affectBlocks;
+  @Shadow(remap = false) private boolean affectBlocks;
 
   @Inject(method = "onExplosionDone", at = @At("HEAD"), remap = false)
   private void onExplosionDone(long gametime, CallbackInfo ci)

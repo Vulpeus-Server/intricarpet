@@ -67,9 +67,10 @@ public class ServerChunkCacheMixin
   //$$         )
   //$$ )
   //$$ private void redirectForEachBlockTickingChunk(ChunkMap chunkMapInstance, Consumer<LevelChunk> originalConsumer) {
+  //$$   IChunkMap chunkMap = (IChunkMap)chunkMapInstance;
   //$$   Consumer<LevelChunk> wrapper = (levelChunk) -> {
   //$$     try {
-  //$$       boolean should = ((IChunkMap)chunkMapInstance)
+  //$$       boolean should = chunkMap
   //$$               .anyPlayerCloseWithInteraction(levelChunk.getPos(), Interaction.RANDOMTICKS);
   //$$       if (should) {
   //$$         originalConsumer.accept(levelChunk);
@@ -78,7 +79,7 @@ public class ServerChunkCacheMixin
   //$$       t.printStackTrace();
   //$$     }
   //$$   };
-  //$$   chunkMapInstance.forEachBlockTickingChunk(wrapper);
+  //$$   chunkMap.forEachBlockTickingChunk(wrapper);
   //$$ }
   //#else
   @WrapWithCondition(method = targetMethod, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;tickChunk(Lnet/minecraft/world/level/chunk/LevelChunk;I)V"))

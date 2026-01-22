@@ -21,7 +21,7 @@ import net.minecraft.world.level.ChunkPos;
 //#endif
 
 @Mixin(ChunkMap.class)
-public class ChunkMapMixin implements IChunkMap
+public abstract class ChunkMapMixin implements IChunkMap
 {
   //#if MC >= 12105
   //$$ @Shadow private static double euclideanDistanceSquared(ChunkPos chunkPos, Vec3 vec){return 0.0;}
