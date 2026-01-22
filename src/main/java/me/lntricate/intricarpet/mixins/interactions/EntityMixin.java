@@ -44,7 +44,11 @@ public class EntityMixin
     return !noBlockInteraction();
   }
 
+  //#if MC <= 12105
   @Inject(method = "checkInsideBlocks", at = @At("HEAD"), cancellable = true)
+  //#else
+  //$$ @Inject(method = "checkInsideBlocks(Ljava/util/List;Lnet/minecraft/world/entity/InsideBlockEffectApplier$StepBasedCollector;)V", at = @At("HEAD"), cancellable = true)
+  //#endif
   private void checkInsideBlocks(CallbackInfo ci)
   {
     if(noBlockInteraction())

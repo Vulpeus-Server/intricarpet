@@ -25,6 +25,7 @@ preprocess {
     def mc1214 = createNode('1.21.4' , 1_21_04, '')
     def mc1215 = createNode('1.21.5' , 1_21_05, '')
     def mc1218 = createNode('1.21.8' , 1_21_08, '')
+    def mc12110 = createNode('1.21.10' , 1_21_10, '')
     // def mcSnapshot = createNode('snapshot', 1_19_00, '')
 
   // mc115.link(mc114, null)
@@ -41,6 +42,7 @@ preprocess {
   mc1211.link(mc1214, null)
   mc1214.link(mc1215, null)
   mc1215.link(mc1218, null)
+  mc1218.link(mc12110, null)
   // mc119.link(mcSnapshot, null)
 
   for (final def node in getNodes()) {
