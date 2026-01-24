@@ -22,6 +22,10 @@ repositories {
     url = 'https://maven.fallenbreath.me/releases'
     content { includeGroup('me.fallenbreath') }
   }
+  maven {
+    url = 'https://maven.fallenbreath.me/jitpack'
+    content { includeGroupAndSubgroups('com.github') }
+  }
 }
 
 dependencies {
@@ -51,7 +55,11 @@ dependencies {
   autoImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
   // mods
-  autoImplementation "carpet:fabric-carpet:${project.carpet_version}"
+  if (project.carpet_version.matches('^com.github.[a-zA-Z0-9_-]+:fabric-carpet:[a-z0-9._+-]+$')) {
+    autoImplementation project.carpet_version  // jitpack
+  } else {
+    autoImplementation "carpet:fabric-carpet:${project.carpet_version}"  // masa's maven
+  }
 
   // dependencies
   if (mcVersion < 12005) {
