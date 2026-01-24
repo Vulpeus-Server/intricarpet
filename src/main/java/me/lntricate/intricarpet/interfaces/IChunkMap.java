@@ -9,6 +9,4 @@ import net.minecraft.world.level.chunk.LevelChunk;
 public interface IChunkMap
 {
   public boolean anyPlayerCloseWithInteraction(ChunkPos chunkPos, Interaction interaction);
-
-  public void forEachBlockTickingChunk(Consumer<LevelChunk> chunkConsumer);
 }
