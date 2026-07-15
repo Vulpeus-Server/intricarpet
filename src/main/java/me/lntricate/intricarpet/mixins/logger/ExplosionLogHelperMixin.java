@@ -30,13 +30,22 @@ public class ExplosionLogHelperMixin
 
   private String option = "";
 
+  //#if MC >= 260000
+  //$$ @Inject(method = "lambda$onExplosionDone$0", at = @At("HEAD"), remap = false)
+  //$$ private void getOption(long gametime, String option_, CallbackInfoReturnable<Component[]> cir)
+  //#else
   @Inject(method = "lambda$onExplosionDone$1", at = @At("HEAD"), remap = false)
   private void getOption(long gametime, String option_, CallbackInfoReturnable<BaseComponent> cir)
+  //#endif
   {
     option = option_;
   }
 
+  //#if MC > 260000
+  //$$ @ModifyReceiver(method = "lambda$onExplosionDone$0", at = @At(value = "INVOKE", target = "Ljava/util/List;toArray([Ljava/lang/Object;)[Ljava/lang/Object;", remap = false))
+  //#else
   @ModifyReceiver(method = "lambda$onExplosionDone$1", at = @At(value = "INVOKE", target = "Ljava/util/List;toArray([Ljava/lang/Object;)[Ljava/lang/Object;", remap = false))
+  //#endif
   private List<BaseComponent> addLoggers(List<BaseComponent> messages, Object[] dummy)
   {
     return me.lntricate.intricarpet.logging.logHelpers.ExplosionLogHelper.onLog(messages, option);
