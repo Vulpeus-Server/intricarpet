@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 @Mixin(OptimizedExplosion.class)
 public class OptimizedExplosionMixin
 {
+  //#if MC < 260000
   @Unique private static final double SAME_POSITION_VELOCITY = 0.9923437498509884;
 
   @Inject(method = "doExplosionA", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getZ()D", ordinal = 1, shift = Shift.BY, by = 3), locals = LocalCapture.CAPTURE_FAILHARD)
@@ -30,4 +31,5 @@ public class OptimizedExplosionMixin
       entity.setDeltaMovement(vel.x, vel.y - SAME_POSITION_VELOCITY, vel.z);
     }
   }
+  //#endif
 }

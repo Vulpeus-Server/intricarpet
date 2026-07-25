@@ -11,9 +11,11 @@ public class Rules
   )
   public static String commandInteraction = "ops";
 
+  //#if MC < 260000
   @Rule(
     desc = "Enables edge case fixes in optimizedTNT, at the cost of a bit less optimization",
     category = {"COMMAND", "intricarpet"}
   )
   public static boolean optimizedTNTEdgeCases = false;
+  //#endif
 }
