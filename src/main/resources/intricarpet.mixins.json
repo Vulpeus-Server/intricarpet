@@ -16,6 +16,7 @@
     "interactions.ProjectileMixin",
     "interactions.ServerChunkCacheMixin",
     "interactions.ServerGamePacketListenerImplMixin",
+    "interactions.ServerLevelMixin",
     "interactions.ServerPlayerMixin"
   ],
   "client": [
