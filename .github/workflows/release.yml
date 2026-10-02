@@ -35,6 +35,10 @@ jobs:
       - build
     runs-on: ubuntu-latest
 
+    permissions:
+      actions: read  # for actions/download-artifact
+      contents: write  # for gh release upload
+
     strategy:
       matrix: ${{ fromJson(needs.matrix_prep.outputs.matrix) }}
 
@@ -61,7 +65,7 @@ jobs:
         run: |
           if [ $GITHUB_EVENT_NAME == 'release' ]
           then
-              echo "tag_name=" >> $GITHUB_OUTPUT  # leave an empty value here so softprops/action-gh-release will use the default value
+              echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
           elif [ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]
           then
               echo "tag_name=${{ github.event.inputs.target_release_tag }}" >> $GITHUB_OUTPUT
@@ -69,6 +73,33 @@ jobs:
               echo Unknown github event name $GITHUB_EVENT_NAME
               exit 1
           fi
+
+      # GitHub sorts release assets by file name, not by upload order, so the
+      # order in which the jars are uploaded here does not matter.
+      - name: Attach the built jar to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag_name="${{ steps.release_info.outputs.tag_name }}"
+          jar_dir="build-artifacts/${{ matrix.subproject_dir }}/build/libs"
+          shopt -s nullglob
+          jars=("$jar_dir"/*.jar)
+          if [ ${#jars[@]} -eq 0 ]
+          then
+              echo "No jar files found in $jar_dir" >&2
+              exit 1
+          fi
+          for jar in "${jars[@]}"
+          do
+              case "$(basename "$jar")" in
+                  *-dev.jar|*-sources.jar|*-shadow.jar)
+                      echo "Skipping $jar"
+                      continue
+                      ;;
+              esac
+              echo "Uploading $jar to release $tag_name"
+              gh release upload "$tag_name" "$jar" --clobber
+          done
 
       - name: Read common properties
         id: properties_g
